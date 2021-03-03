@@ -18,6 +18,7 @@ public class TelegramMessageUtils {
   public static <T> String[] toMentions(@NonNull Collection<T> objs, Function<T, String> getter) {
     return objs.stream()
         .map(getter)
+        .map(TelegramMessageUtils::toMention)
         .toArray(String[]::new);
   }
 }
