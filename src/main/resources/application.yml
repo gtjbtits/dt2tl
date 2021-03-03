@@ -10,7 +10,7 @@ spring:
 logging:
   level:
     root: info
-    com.jbtits: debug
+    com.jbtits: ${log_jbtits:info}
 botapi:
   token: ${botapi_token}
   username: ${botapi_username}
