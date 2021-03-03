@@ -33,4 +33,4 @@ build/
 .vscode/
 
 **.log
-/g2t.mv.db
+*.db

@@ -1,6 +1,7 @@
 package com.jbtits.github2telegram.component;
 
 import com.jbtits.github2telegram.configuration.properties.BotApiProperties;
+import com.jbtits.github2telegram.domain.event.MentionAllEvent;
 import com.jbtits.github2telegram.domain.event.NewUrlMessageEvent;
 import com.jbtits.github2telegram.helpers.JsonHelper;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +12,12 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -23,6 +26,9 @@ import java.util.Optional;
 public class G2TBot extends TelegramLongPollingBot {
 
     private static final String MESSAGE_ENTITY_URL_TYPE = "url";
+    private static final String MESSAGE_ENTITY_CMD_TYPE = "bot_command";
+
+    private static final String ALL_CMD = "/all";
 
     private final ApplicationEventPublisher publisher;
     private final BotApiProperties botApiProperties;
@@ -43,6 +49,7 @@ public class G2TBot extends TelegramLongPollingBot {
         log.trace("New update: {}", this.jsonHelper.toPrettyString(update));
         final Message msg = update.getMessage();
         this.parseUrlMessage(msg).ifPresent(publisher::publishEvent);
+        this.parseMentionAllCmd(msg).ifPresent(publisher::publishEvent);
     }
 
     public void sendMessage(String text, String chatId) {
@@ -60,10 +67,10 @@ public class G2TBot extends TelegramLongPollingBot {
 
     private Optional<NewUrlMessageEvent> parseUrlMessage(Message msg) {
         if (msg == null
-            || msg.getText() == null
-            || msg.getEntities() == null
-            || msg.getEntities().stream()
-                .noneMatch(messageEntity -> messageEntity.getType().equals(MESSAGE_ENTITY_URL_TYPE))) {
+            || msg.getText() == null) {
+            return Optional.empty();
+        }
+        if (this.hasNotType(msg.getEntities(), MESSAGE_ENTITY_URL_TYPE)) {
             return Optional.empty();
         }
         final User from = msg.getFrom();
@@ -78,5 +85,28 @@ public class G2TBot extends TelegramLongPollingBot {
         final String username = from.getUserName();
         final String chatId = chat.getId().toString();
         return Optional.of(new NewUrlMessageEvent(url, username, chatId));
+    }
+
+    private Optional<MentionAllEvent> parseMentionAllCmd(Message msg) {
+        if (msg == null
+            || msg.getText() == null) {
+            return Optional.empty();
+        }
+        if (this.hasNotType(msg.getEntities(), MESSAGE_ENTITY_CMD_TYPE)) {
+            return Optional.empty();
+        }
+        final Chat chat = msg.getChat();
+        if (chat == null) {
+            return Optional.empty();
+        }
+        final String text = msg.getText();
+        final String chatId = chat.getId().toString();
+        return text.equals(ALL_CMD) ? Optional.of(new MentionAllEvent(chatId)) : Optional.empty();
+    }
+
+    private boolean hasNotType(List<MessageEntity> entityList, String type) {
+        return entityList == null
+            || entityList.stream()
+                .noneMatch(messageEntity -> messageEntity.getType().equals(type));
     }
 }

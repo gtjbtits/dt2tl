@@ -1,10 +1,11 @@
 package com.jbtits.github2telegram.listener;
 
-import com.jbtits.github2telegram.domain.dto.CodeReviewAnnounceDto;
+import com.jbtits.github2telegram.domain.dto.announce.CodeReviewAnnounce;
 import com.jbtits.github2telegram.domain.event.NewUrlMessageEvent;
 import com.jbtits.github2telegram.persistence.entity.Developer;
 import com.jbtits.github2telegram.persistence.service.DeveloperService;
 import com.jbtits.github2telegram.service.AnnounceService;
+import com.jbtits.github2telegram.util.TelegramMessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,30 +26,22 @@ public class CodeReviewMsgListener {
   private String prefix;
 
   @EventListener
-  public void handleCodeReviewUrl(NewUrlMessageEvent msg) {
-    log.debug("Handling newUrlMessage event '{}'. Current PR prefix is '{}'", msg, this.prefix);
-    final String url = msg.getUrl();
+  public void handleCodeReviewUrl(NewUrlMessageEvent event) {
+    log.debug("Handling newUrlMessage event '{}'. Current PR prefix is '{}'", event, this.prefix);
+    final String url = event.getUrl();
     if (!url.contains(this.prefix)) {
       log.debug("Link '{}' ignored, because doesn't contains CR url prefix '{}'", url, this.prefix);
       return;
     }
-    final Set<Developer> reviewers = this.developerService.findReviewers(msg.getUsername());
+    final Set<Developer> reviewers = this.developerService.findReviewers(event.getUsername());
     if (reviewers.isEmpty()) {
       log.warn("Can't announce review to PR '{}', because reviewers set is empty", url);
     }
-    final String[] to = reviewers.stream()
-        .map(Developer::getUsername)
-        .map(this::convertToMention)
-        .toArray(String[]::new);
-    final CodeReviewAnnounceDto announceDto = new CodeReviewAnnounceDto(
-        this.convertToMention(msg.getUsername()),
-        to,
+    final CodeReviewAnnounce announceDto = new CodeReviewAnnounce(
+        TelegramMessageUtils.toMention(event.getUsername()),
+        TelegramMessageUtils.toMentions(reviewers, Developer::getUsername),
         url,
-        msg.getChatId());
+        event.getChatId());
     this.announceService.makeAnnounceForReviewers(announceDto);
-  }
-
-  private String convertToMention(String username) {
-    return "@" + username;
   }
 }

@@ -1,7 +1,9 @@
 package com.jbtits.github2telegram.service;
 
 import com.jbtits.github2telegram.component.G2TBot;
-import com.jbtits.github2telegram.domain.dto.CodeReviewAnnounceDto;
+import com.jbtits.github2telegram.domain.dto.announce.CodeReviewAnnounce;
+import com.jbtits.github2telegram.domain.dto.announce.MentionAnnounce;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class AnnounceService {
 
   private final G2TBot bot;
 
-  public void makeAnnounceForReviewers(CodeReviewAnnounceDto announceDto) {
+  public void makeAnnounceForReviewers(@NonNull CodeReviewAnnounce announceDto) {
     final String announceText = ANNOUNCE_TEXTS[RANDOM.nextInt(ANNOUNCE_TEXTS.length)];
     final String reviewers = String.join(", ", announceDto.getTo());
     final String text = String.format("%s%n%s%n%nDeveloper: %s%nReviewers: %s",
@@ -38,5 +40,10 @@ public class AnnounceService {
         announceDto.getFrom(),
         reviewers);
     bot.sendMessage(text, announceDto.getChatId());
+  }
+
+  public void mention(@NonNull MentionAnnounce mentionAnnounce) {
+    final String text = String.join(" ", mentionAnnounce.getTo());
+    bot.sendMessage(text, mentionAnnounce.getChatId());
   }
 }

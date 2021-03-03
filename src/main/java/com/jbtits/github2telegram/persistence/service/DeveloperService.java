@@ -32,6 +32,11 @@ public class DeveloperService {
     return reviewers;
   }
 
+  @Transactional(readOnly = true)
+  public List<Developer> findAll() {
+    return this.repository.findAll();
+  }
+
   private Optional<Developer> findRandomDeveloperInHisTeamExceptHimSelf(Developer developer) {
     final List<Developer> developers =
         this.repository.findAllByTeamAndUsernameNot(developer.getTeam(), developer.getUsername());
