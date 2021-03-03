@@ -26,14 +26,15 @@ public class CodeReviewMsgListener {
 
   @EventListener
   public void handleCodeReviewUrl(NewUrlMessageEvent msg) {
+    log.debug("Handling newUrlMessage event '{}'. Current PR prefix is '{}'", msg, this.prefix);
     final String url = msg.getUrl();
     if (!url.contains(this.prefix)) {
-      log.debug("Link {} ignored, because doesn't contains CR url prefix {}", url, this.prefix);
+      log.debug("Link '{}' ignored, because doesn't contains CR url prefix '{}'", url, this.prefix);
       return;
     }
     final Set<Developer> reviewers = this.developerService.findReviewers(msg.getUsername());
     if (reviewers.isEmpty()) {
-      log.warn("Can't announce review to PR {}, because reviewers set is empty", url);
+      log.warn("Can't announce review to PR '{}', because reviewers set is empty", url);
     }
     final String[] to = reviewers.stream()
         .map(Developer::getUsername)

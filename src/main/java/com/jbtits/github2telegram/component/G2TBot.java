@@ -40,7 +40,7 @@ public class G2TBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        log.debug("New update: {}", this.jsonHelper.toPrettyString(update));
+        log.trace("New update: {}", this.jsonHelper.toPrettyString(update));
         final Message msg = update.getMessage();
         this.parseUrlMessage(msg).ifPresent(publisher::publishEvent);
     }

@@ -7,6 +7,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+logging:
+  level:
+    root: info
+    com.jbtits: debug
 botapi:
   token: ${botapi_token}
   username: ${botapi_username}
