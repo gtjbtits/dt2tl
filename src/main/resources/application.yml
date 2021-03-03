@@ -1,3 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:h2:./g2t
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
 botapi:
-  token: 1350905203:AAFt27bxpeVcLiOeFZ9fO8NwK0KYRmR-tMg
-  username: Github2TelegramBot
+  token: ${botapi_token}
+  username: ${botapi_username}
+pr:
+  prefix: ${pr_prefix}
