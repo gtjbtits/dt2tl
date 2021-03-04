@@ -101,7 +101,9 @@ public class G2TBot extends TelegramLongPollingBot {
         }
         final String text = msg.getText();
         final String chatId = chat.getId().toString();
-        return text.equals(ALL_CMD) ? Optional.of(new MentionAllEvent(chatId)) : Optional.empty();
+        return text.equals(ALL_CMD) || text.equals(ALL_CMD + '@' + botApiProperties.getUsername())
+            ? Optional.of(new MentionAllEvent(chatId))
+            : Optional.empty();
     }
 
     private boolean hasNotType(List<MessageEntity> entityList, String type) {
