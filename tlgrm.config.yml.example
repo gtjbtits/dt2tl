@@ -1,0 +1,13 @@
+#
+# help message
+#
+teams:
+  -
+    name: devTeam #Telegram.chatName
+    fellows:
+      -
+        id: 41241aeaff1_14f0 #Do not change
+        name: Leopold Stotch #Telegram.firstname + lastname
+      -
+        id: 51241aeaff1_c00c
+        name: Big Mamba
