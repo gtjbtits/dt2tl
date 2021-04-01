@@ -1,0 +1,1 @@
+delete from DEVELOPER where USERNAME = 'VoroninMaxim';
