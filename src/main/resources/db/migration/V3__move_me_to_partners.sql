@@ -1,1 +1,0 @@
-update DEVELOPER set TEAM_ID=1 where USERNAME = 'gtjbtits';

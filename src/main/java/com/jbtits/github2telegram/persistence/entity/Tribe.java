@@ -4,25 +4,24 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "teams")
+@Table(name = "tribes")
 @EqualsAndHashCode(callSuper = true)
-public class Team extends BaseIdEntity {
+public class Tribe extends BaseBusinessEntity {
 
   private String name;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "tribe_id")
-  private Tribe tribe;
+  @OneToMany(mappedBy = "tribe")
+  private Set<Team> teams;
 
-  @OneToMany(mappedBy = "team")
-  private Set<Fellow> fellows;
+  @OneToOne
+  @JoinColumn(name = "tlgrm_chat_id")
+  private TelegramChat telegramChat;
 }

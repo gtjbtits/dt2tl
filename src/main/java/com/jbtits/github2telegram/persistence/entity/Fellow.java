@@ -3,20 +3,24 @@ package com.jbtits.github2telegram.persistence.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Data
 @Entity
-@EqualsAndHashCode(callSuper = false, of = {"username"})
-public class Developer extends BaseIdEntity {
+@Table(name = "fellows")
+@EqualsAndHashCode(callSuper = true)
+public class Fellow extends BaseBusinessEntity {
 
-  @Column(name = "username")
-  private String username;
+  private String name;
 
   @ManyToOne
   @JoinColumn(name = "team_id")
   private Team team;
+
+  @ManyToOne
+  @JoinColumn(name = "tlgrm_user_id")
+  private TelegramUser telegramUser;
 }

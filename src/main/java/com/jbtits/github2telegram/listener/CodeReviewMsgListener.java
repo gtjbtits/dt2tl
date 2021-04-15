@@ -2,7 +2,7 @@ package com.jbtits.github2telegram.listener;
 
 import com.jbtits.github2telegram.domain.dto.announce.CodeReviewAnnounce;
 import com.jbtits.github2telegram.domain.event.NewUrlMessageEvent;
-import com.jbtits.github2telegram.persistence.entity.Developer;
+import com.jbtits.github2telegram.persistence.entity.Fellow;
 import com.jbtits.github2telegram.persistence.service.DeveloperService;
 import com.jbtits.github2telegram.service.AnnounceService;
 import com.jbtits.github2telegram.util.TelegramMessageUtils;
@@ -33,13 +33,13 @@ public class CodeReviewMsgListener {
       log.debug("Link '{}' ignored, because doesn't contains CR url prefix '{}'", url, this.prefix);
       return;
     }
-    final Set<Developer> reviewers = this.developerService.findReviewers(event.getUsername());
+    final Set<Fellow> reviewers = this.developerService.findReviewers(event.getUsername());
     if (reviewers.isEmpty()) {
       log.warn("Can't announce review to PR '{}', because reviewers set is empty", url);
     }
     final CodeReviewAnnounce announceDto = new CodeReviewAnnounce(
         TelegramMessageUtils.toMention(event.getUsername()),
-        TelegramMessageUtils.toMentions(reviewers, Developer::getUsername),
+        TelegramMessageUtils.toMentions(reviewers, fellow -> {throw new RuntimeException("Telegram @username needed here");}),
         url,
         event.getChatId());
     this.announceService.makeAnnounceForReviewers(announceDto);

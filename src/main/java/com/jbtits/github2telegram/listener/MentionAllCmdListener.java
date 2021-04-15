@@ -2,7 +2,7 @@ package com.jbtits.github2telegram.listener;
 
 import com.jbtits.github2telegram.domain.dto.announce.MentionAnnounce;
 import com.jbtits.github2telegram.domain.event.MentionAllEvent;
-import com.jbtits.github2telegram.persistence.entity.Developer;
+import com.jbtits.github2telegram.persistence.entity.Fellow;
 import com.jbtits.github2telegram.persistence.service.DeveloperService;
 import com.jbtits.github2telegram.service.AnnounceService;
 import com.jbtits.github2telegram.util.TelegramMessageUtils;
@@ -22,9 +22,9 @@ public class MentionAllCmdListener {
 
   @EventListener
   public void handleMentionAllEvent(@NonNull MentionAllEvent event) {
-    final List<Developer> developers = this.developerService.findAll();
+    final List<Fellow> fellows = this.developerService.findAll();
     final MentionAnnounce mentionAnnounce = new MentionAnnounce(
-        TelegramMessageUtils.toMentions(developers, Developer::getUsername),
+        TelegramMessageUtils.toMentions(fellows, fellow -> {throw new RuntimeException("Telegram @username needed here");}),
         event.getChatId()
     );
     this.announceService.mention(mentionAnnounce);
