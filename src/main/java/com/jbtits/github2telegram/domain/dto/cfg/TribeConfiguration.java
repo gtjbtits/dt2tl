@@ -1,8 +1,5 @@
 package com.jbtits.github2telegram.domain.dto.cfg;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.jbtits.github2telegram.domain.dto.entity.TribeRequest;
 import com.jbtits.github2telegram.domain.dto.entity.TribeResponse;
 
@@ -14,11 +11,11 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class TribeConfiguration extends ConfigurationPart<TribeRequest, TribeResponse> {
 	
-	private Set<TeamConfiguration> teamConfigurations = new HashSet<>();
+	private final TeamConfiguration teamConfiguration = new TeamConfiguration();
 
 	@Override
 	public boolean isEmpty() {
-		return super.isEmpty() && teamConfigurations.isEmpty();
+		return super.isEmpty() && teamConfiguration.isEmpty();
 	}
 	
 	

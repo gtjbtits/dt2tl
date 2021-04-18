@@ -6,7 +6,9 @@ import com.jbtits.github2telegram.domain.dto.entity.TribeResponse;
 
 public interface ConfigurationService {
 	
-	TribeConfiguration build(TribeRequest newConfig, TribeResponse persistendConfig);
+	TribeConfiguration build(TribeRequest request, TribeResponse persisted);
+	
+	TribeConfiguration build(TribeRequest request);
 	
 	void apply(TribeConfiguration config);
 }

@@ -14,11 +14,11 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = true)
 public class TeamConfiguration extends ConfigurationPart<TeamRequest, TeamResponse> {
 
-	private final Set<FellowConfiguration> fellowConfigurations = new HashSet<>();
+	private final FellowConfiguration fellowConfiguration = new FellowConfiguration();
 
 	@Override
 	public boolean isEmpty() {
-		return super.isEmpty() && fellowConfigurations.isEmpty();
+		return super.isEmpty() && fellowConfiguration.isEmpty();
 	}
 	
 	
