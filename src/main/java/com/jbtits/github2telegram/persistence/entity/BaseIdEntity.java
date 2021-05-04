@@ -9,7 +9,7 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-abstract class BaseIdEntity {
+public abstract class BaseIdEntity {
   @Id
   private long id;
 
