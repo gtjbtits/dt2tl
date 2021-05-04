@@ -2,17 +2,20 @@ package com.jbtits.github2telegram.domain.event;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString
-@RequiredArgsConstructor
-public class NewUrlMessageEvent {
+@ToString(callSuper = true)
+public class NewUrlMessageEvent extends AbstractTelegramEvent {
+
   @NonNull
   private final String url;
   @NonNull
   private final String username;
-  @NonNull
-  private final String chatId;
+
+  public NewUrlMessageEvent(long chatId, String url, String username) {
+    super(chatId);
+    this.url = url;
+    this.username = username;
+  }
 }

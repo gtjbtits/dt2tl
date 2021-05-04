@@ -9,6 +9,5 @@ import lombok.RequiredArgsConstructor;
 public class MentionAnnounce {
   @NonNull
   private final String[] to;
-  @NonNull
-  private final String chatId;
+  private final long chatId;
 }

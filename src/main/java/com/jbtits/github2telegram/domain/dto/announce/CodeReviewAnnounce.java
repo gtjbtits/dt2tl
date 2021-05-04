@@ -13,6 +13,5 @@ public class CodeReviewAnnounce {
   private final String[] to;
   @NonNull
   private final String url;
-  @NonNull
-  private final String chatId;
+  private final long chatId;
 }

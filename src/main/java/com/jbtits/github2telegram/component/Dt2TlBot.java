@@ -2,6 +2,7 @@ package com.jbtits.github2telegram.component;
 
 import com.jbtits.github2telegram.configuration.properties.BotApiProperties;
 import com.jbtits.github2telegram.domain.event.MentionAllEvent;
+import com.jbtits.github2telegram.domain.event.NewConfigEvent;
 import com.jbtits.github2telegram.domain.event.NewUrlMessageEvent;
 import com.jbtits.github2telegram.helpers.JsonHelper;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.MessageEntity;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,12 +25,18 @@ import java.util.Optional;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class G2TBot extends TelegramLongPollingBot {
+public class Dt2TlBot extends TelegramLongPollingBot {
+
+    private static final String TEXT_CMD_PREFIX = "!";
+    private static final String NEW_CONFIG_TEXT_CMD = TEXT_CMD_PREFIX;
+
+    private static final String CONFIG_MIME_TYPE = "application/x-yaml";
+    private static final int CONFIG_SIZE_LIMIT_BYTES = 100_000;
 
     private static final String MESSAGE_ENTITY_URL_TYPE = "url";
     private static final String MESSAGE_ENTITY_CMD_TYPE = "bot_command";
 
-    private static final String ALL_CMD = "/all";
+    private static final String ALL_TELEGRAM_CMD = "/all";
 
     private final ApplicationEventPublisher publisher;
     private final BotApiProperties botApiProperties;
@@ -50,11 +58,12 @@ public class G2TBot extends TelegramLongPollingBot {
         final Message msg = update.getMessage();
         this.parseUrlMessage(msg).ifPresent(publisher::publishEvent);
         this.parseMentionAllCmd(msg).ifPresent(publisher::publishEvent);
+        this.parseNewConfigMessage(msg).ifPresent(publisher::publishEvent);
     }
 
-    public void sendMessage(String text, String chatId) {
+    public void sendMessage(String text, long chatId) {
         final SendMessage sendMessageObj = SendMessage.builder()
-            .chatId(chatId)
+            .chatId(String.valueOf(chatId))
             .text(text)
             .build();
         try {
@@ -66,42 +75,69 @@ public class G2TBot extends TelegramLongPollingBot {
     }
 
     private Optional<NewUrlMessageEvent> parseUrlMessage(Message msg) {
-        if (msg == null
-            || msg.getText() == null) {
+        if (!Dt2TlBot.isInvalidMessage(msg)) {
+            log.debug("Invalid message, cause default checks not passed: {}", msg);
             return Optional.empty();
         }
         if (this.hasNotType(msg.getEntities(), MESSAGE_ENTITY_URL_TYPE)) {
+            log.debug("Not an URL message: {}", msg);
             return Optional.empty();
         }
         final User from = msg.getFrom();
         if (from == null || from.getUserName() == null) {
+            log.debug("Can't find 'from': {}", msg);
             return Optional.empty();
         }
         final Chat chat = msg.getChat();
-        if (chat == null) {
+        if (msg.getText() == null) {
+            log.debug("Message has no text: {}", msg);
             return Optional.empty();
         }
         final String url = msg.getText();
         final String username = from.getUserName();
-        final String chatId = chat.getId().toString();
-        return Optional.of(new NewUrlMessageEvent(url, username, chatId));
+        final long chatId = chat.getId();
+        return Optional.of(new NewUrlMessageEvent(chatId, url, username));
+    }
+
+    private Optional<NewConfigEvent> parseNewConfigMessage(Message msg) {
+        if (Dt2TlBot.isInvalidMessage(msg)) {
+            log.debug("Invalid message, cause default checks not passed: {}", msg);
+            return Optional.empty();
+        }
+        final long chatId = msg.getChat().getId();
+        final String caption = msg.getCaption();
+        if (caption == null || !caption.equals(NEW_CONFIG_TEXT_CMD)) {
+            log.debug("Bad caption: {}", msg);
+            return Optional.empty();
+        }
+        final Document document = msg.getDocument();
+        if (document == null || document.getFileId() == null
+            || document.getMimeType() == null || !document.getMimeType().equals(CONFIG_MIME_TYPE)
+            || document.getFileSize() == null || document.getFileSize() > CONFIG_SIZE_LIMIT_BYTES) {
+            log.debug("Bad document: {}", msg);
+            return Optional.empty();
+        }
+        final String fileId = document.getFileId();
+        return Optional.of(new NewConfigEvent(chatId, fileId));
     }
 
     private Optional<MentionAllEvent> parseMentionAllCmd(Message msg) {
-        if (msg == null
-            || msg.getText() == null) {
+        if (Dt2TlBot.isInvalidMessage(msg)) {
+            log.debug("Invalid message, cause default checks not passed: {}", msg);
             return Optional.empty();
         }
         if (this.hasNotType(msg.getEntities(), MESSAGE_ENTITY_CMD_TYPE)) {
+            log.debug("Not an CMD message: {}", msg);
             return Optional.empty();
         }
         final Chat chat = msg.getChat();
-        if (chat == null) {
+        if (msg.getText() == null) {
+            log.debug("Message has no text: {}", msg);
             return Optional.empty();
         }
         final String text = msg.getText();
-        final String chatId = chat.getId().toString();
-        return text.equals(ALL_CMD) || text.equals(ALL_CMD + '@' + botApiProperties.getUsername())
+        final long chatId = chat.getId();
+        return text.equals(ALL_TELEGRAM_CMD) || text.equals(ALL_TELEGRAM_CMD + '@' + botApiProperties.getUsername())
             ? Optional.of(new MentionAllEvent(chatId))
             : Optional.empty();
     }
@@ -110,5 +146,9 @@ public class G2TBot extends TelegramLongPollingBot {
         return entityList == null
             || entityList.stream()
                 .noneMatch(messageEntity -> messageEntity.getType().equals(type));
+    }
+
+    private static boolean isInvalidMessage(Message msg) {
+        return msg == null || msg.getChat() == null;
     }
 }

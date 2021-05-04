@@ -1,6 +1,6 @@
 package com.jbtits.github2telegram.service;
 
-import com.jbtits.github2telegram.component.G2TBot;
+import com.jbtits.github2telegram.component.Dt2TlBot;
 import com.jbtits.github2telegram.domain.dto.announce.CodeReviewAnnounce;
 import com.jbtits.github2telegram.domain.dto.announce.MentionAnnounce;
 import lombok.NonNull;
@@ -29,7 +29,7 @@ public class AnnounceService {
       "Practice lightweight code reviews"
   };
 
-  private final G2TBot bot;
+  private final Dt2TlBot bot;
 
   public void makeAnnounceForReviewers(@NonNull CodeReviewAnnounce announceDto) {
     final String announceText = ANNOUNCE_TEXTS[RANDOM.nextInt(ANNOUNCE_TEXTS.length)];
