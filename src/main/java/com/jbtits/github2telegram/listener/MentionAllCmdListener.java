@@ -24,8 +24,8 @@ public class MentionAllCmdListener {
   public void handleMentionAllEvent(@NonNull MentionAllEvent event) {
     final List<Fellow> fellows = this.developerService.findAll();
     final MentionAnnounce mentionAnnounce = new MentionAnnounce(
-        TelegramMessageUtils.toMentions(fellows, fellow -> {throw new RuntimeException("Telegram @username needed here");}),
-        event.getChatId()
+        event.getChatId(),
+        TelegramMessageUtils.toMentions(fellows, fellow -> {throw new RuntimeException("Telegram @username needed here");})
     );
     this.announceService.mention(mentionAnnounce);
   }

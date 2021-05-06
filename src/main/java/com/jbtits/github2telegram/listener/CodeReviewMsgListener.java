@@ -38,10 +38,10 @@ public class CodeReviewMsgListener {
       log.warn("Can't announce review to PR '{}', because reviewers set is empty", url);
     }
     final CodeReviewAnnounce announceDto = new CodeReviewAnnounce(
+        event.getChatId(),
         TelegramMessageUtils.toMention(event.getUsername()),
         TelegramMessageUtils.toMentions(reviewers, fellow -> {throw new RuntimeException("Telegram @username needed here");}),
-        url,
-        event.getChatId());
+        url);
     this.announceService.makeAnnounceForReviewers(announceDto);
   }
 }

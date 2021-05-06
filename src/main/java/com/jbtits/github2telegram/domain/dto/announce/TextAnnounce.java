@@ -6,12 +6,12 @@ import lombok.ToString;
 
 @Getter
 @ToString(callSuper = true)
-public class MentionAnnounce extends AbstractAnnounce {
-  @NonNull
-  private final String[] to;
+public class TextAnnounce extends AbstractAnnounce {
 
-  public MentionAnnounce(long chatId, @NonNull String[] to) {
+  private final String text;
+
+  public TextAnnounce(long chatId, @NonNull String text) {
     super(chatId);
-    this.to = to;
+    this.text = text;
   }
 }

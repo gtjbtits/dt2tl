@@ -31,7 +31,7 @@ public class Dt2TlBot extends TelegramLongPollingBot {
     private static final String NEW_CONFIG_TEXT_CMD = TEXT_CMD_PREFIX;
 
     private static final String CONFIG_MIME_TYPE = "application/x-yaml";
-    private static final int CONFIG_SIZE_LIMIT_BYTES = 100_000;
+    private static final int CONFIG_SIZE_LIMIT_BYTES = 20_000; // Telegram bot restriction: https://core.telegram.org/bots/api#getfile
 
     private static final String MESSAGE_ENTITY_URL_TYPE = "url";
     private static final String MESSAGE_ENTITY_CMD_TYPE = "bot_command";
