@@ -6,8 +6,8 @@ teams:
     name: devTeam #Telegram.chatName
     fellows:
       -
-        username: @lolkek1 #Do not change
+        username: lolkek1 #Do not change
         name: Leopold Stotch #Telegram.firstname + lastname
       -
-        id: @lolkek2
+        username: lolkek2
         name: Big Mamba

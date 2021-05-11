@@ -1,18 +1,13 @@
 package com.jbtits.github2telegram.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.Collections;
-import java.util.Set;
-
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
 import com.jbtits.github2telegram.domain.dto.entity.FellowRequest;
 import com.jbtits.github2telegram.domain.dto.entity.TeamRequest;
 import com.jbtits.github2telegram.domain.dto.entity.TribeRequest;
 import com.jbtits.github2telegram.service.impl.DefaultConfigurationService;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,12 +22,12 @@ class ConfigurationServiceTest {
 	
 	@Test
 	void build_Must_ReturnCreatingOnlyConfigurationIfNoTribeInfoHasBeenPersistedBefore() {
-		final TribeRequest tribeRequest = new TribeRequest("Tribe #1", "44834723tlgrm_stub");
+		final TribeRequest tribeRequest = new TribeRequest();
 		
-		final TeamRequest teamRequest = new TeamRequest("Team #1");
+		final TeamRequest teamRequest = new TeamRequest();
 		
-		final FellowRequest fellowRequest1 = new FellowRequest("Fellow #1", "fewfewfeffwetlgrm_Stub");
-		final FellowRequest fellowRequest2 = new FellowRequest("Fellow #2", "fefewfwfwrr4324324tlgrm_stub");
+		final FellowRequest fellowRequest1 = new FellowRequest();
+		final FellowRequest fellowRequest2 = new FellowRequest();
 		
 		teamRequest.getFellows().addAll(Set.of(fellowRequest1, fellowRequest2));
 		tribeRequest.getTeams().add(teamRequest);
