@@ -1,8 +1,8 @@
 package com.jbtits.github2telegram.util;
 
-import com.jbtits.github2telegram.domain.dto.entity.FellowRequest;
-import com.jbtits.github2telegram.domain.dto.entity.TeamRequest;
-import com.jbtits.github2telegram.domain.dto.entity.TribeRequest;
+import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping.TlgrmFellow;
+import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping.TlgrmTeam;
+import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping.TlgrmTribe;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;
@@ -18,22 +18,20 @@ class YamlUtilsTest {
   @SneakyThrows
   void correctYamlConfigurationFile_Must_beCorrectParsedIntoClasses() {
     final File ymlCfg = ResourceUtils.getFile("classpath:tlgrm-config-example.yml");
-    final TribeRequest tribeRequest = YamlUtils.parse(ymlCfg, TribeRequest.class);
-    assertThat(tribeRequest).isNotNull();
-    final Set<TeamRequest> teamRequestSet = tribeRequest.getTeams();
-    assertThat(teamRequestSet).hasSize(1);
-    final TeamRequest teamRequest = teamRequestSet.toArray(TeamRequest[]::new)[0];
-    assertThat(teamRequest).isNotNull();
-    assertThat(teamRequest.getName()).isEqualTo("devTeam");
-    assertThat(teamRequest.getFellows()).isNotNull();
-    final Set<FellowRequest> fellowRequestSet = teamRequest.getFellows();
-    assertThat(fellowRequestSet).hasSize(2);
-    final FellowRequest fellowRequest1 = new FellowRequest();
-    fellowRequest1.setName("Leopold Stotch");
-    fellowRequest1.setUsername("lolkek1");
-    final FellowRequest fellowRequest2 = new FellowRequest();
-    fellowRequest2.setName("Big Mamba");
-    fellowRequest2.setUsername("lolkek2");
-    assertThat(fellowRequestSet).contains(fellowRequest1, fellowRequest2);
+    final TlgrmTribe tlgrmTribe = YamlUtils.parse(ymlCfg, TlgrmTribe.class);
+    assertThat(tlgrmTribe).isNotNull();
+    final Set<TlgrmTeam> tlgrmTeamSet = tlgrmTribe.getTeams();
+    assertThat(tlgrmTeamSet).hasSize(1);
+    final TlgrmTeam tlgrmTeam = tlgrmTeamSet.toArray(TlgrmTeam[]::new)[0];
+    assertThat(tlgrmTeam).isNotNull();
+    assertThat(tlgrmTeam.getName()).isEqualTo("devTeam");
+    assertThat(tlgrmTeam.getFellows()).isNotNull();
+    final Set<TlgrmFellow> tlgrmFellowSet = tlgrmTeam.getFellows();
+    assertThat(tlgrmFellowSet).hasSize(2);
+    final TlgrmFellow tlgrmFellow1 = new TlgrmFellow();
+    tlgrmFellow1.setUsername("lolkek1");
+    final TlgrmFellow tlgrmFellow2 = new TlgrmFellow();
+    tlgrmFellow2.setUsername("lolkek2");
+    assertThat(tlgrmFellowSet).contains(tlgrmFellow1, tlgrmFellow2);
   }
 }

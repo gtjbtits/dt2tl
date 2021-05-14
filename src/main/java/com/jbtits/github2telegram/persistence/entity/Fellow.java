@@ -19,8 +19,4 @@ public class Fellow extends BaseBusinessEntity {
   @ManyToOne
   @JoinColumn(name = "team_id")
   private Team team;
-
-  @ManyToOne
-  @JoinColumn(name = "tlgrm_user_id")
-  private TelegramUser telegramUser;
 }

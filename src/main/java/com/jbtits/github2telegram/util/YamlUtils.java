@@ -19,9 +19,9 @@ public class YamlUtils {
 
   @NonNull
   public static <T> T parse(@NonNull File file, @NonNull Class<T> clazz) {
-    final Constructor constructor = new Constructor(clazz);
-    final Yaml yaml = new Yaml(constructor);
-    try (final FileInputStream fis = new FileInputStream(file)) {
+    final var constructor = new Constructor(clazz);
+    final var yaml = new Yaml(constructor);
+    try (final var fis = new FileInputStream(file)) {
       return yaml.load(fis);
     } catch (IOException e) {
       throw new FileReadException(e);

@@ -3,11 +3,9 @@
 #
 teams:
   -
-    name: devTeam #Telegram.chatName
+    name: devTeam # Team 1
     fellows:
       -
-        username: lolkek1 #Do not change
-        name: Leopold Stotch #Telegram.firstname + lastname
+        username: lolkek1 # Leopold Stotch
       -
-        username: lolkek2
-        name: Big Mamba
+        username: lolkek2 # Kenny McCormick

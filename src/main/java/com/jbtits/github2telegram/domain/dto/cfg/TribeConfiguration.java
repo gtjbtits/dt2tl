@@ -1,20 +1,25 @@
 package com.jbtits.github2telegram.domain.dto.cfg;
 
-import com.jbtits.github2telegram.domain.dto.entity.TribeRequest;
-import com.jbtits.github2telegram.domain.dto.entity.TribeResponse;
+import com.jbtits.github2telegram.domain.dto.common.AbstractContext;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NonNull;
+
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class TribeConfiguration<C> extends ConfigurationPart<TribeRequest, TribeResponse> {
-	
-	private final TeamConfiguration teamConfiguration = new TeamConfiguration();
+public class TribeConfiguration<C extends AbstractContext> extends ConfigurationPart<C> {
 
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() && teamConfiguration.isEmpty();
+	@NonNull
+	private final String name;
+
+	private final Set<TeamConfiguration<C>> teams = new HashSet<>();
+
+	public TribeConfiguration(@NotNull final C context, @NonNull final String name) {
+		super(context);
+		this.name = name;
 	}
-	
-	
 }

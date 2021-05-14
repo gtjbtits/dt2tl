@@ -15,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name = "teams")
 @EqualsAndHashCode(callSuper = true)
-public class Team extends BaseIdEntity {
+public class Team extends BaseBusinessEntity {
 
   private String name;
 

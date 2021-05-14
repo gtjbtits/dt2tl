@@ -4,9 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Set;
 
@@ -20,8 +18,4 @@ public class Tribe extends BaseBusinessEntity {
 
   @OneToMany(mappedBy = "tribe")
   private Set<Team> teams;
-
-  @OneToOne
-  @JoinColumn(name = "tlgrm_chat_id")
-  private TelegramChat telegramChat;
 }

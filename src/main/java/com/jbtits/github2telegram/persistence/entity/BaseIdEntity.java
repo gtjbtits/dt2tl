@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 @Data
 @MappedSuperclass
 @EqualsAndHashCode(exclude = {"created", "updated"})
-abstract class BaseIdEntity {
+public abstract class BaseIdEntity {
   @Id
   private long id;
 

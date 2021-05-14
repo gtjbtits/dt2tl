@@ -1,25 +1,25 @@
 package com.jbtits.github2telegram.domain.dto.cfg;
 
+import com.jbtits.github2telegram.domain.dto.common.AbstractContext;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NonNull;
+
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.jbtits.github2telegram.domain.dto.entity.TeamRequest;
-import com.jbtits.github2telegram.domain.dto.entity.TeamResponse;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-
 @Getter
 @EqualsAndHashCode(callSuper = true)
-public class TeamConfiguration extends ConfigurationPart<TeamRequest, TeamResponse> {
+public class TeamConfiguration<C extends AbstractContext> extends ConfigurationPart<C> {
 
-	private final FellowConfiguration fellowConfiguration = new FellowConfiguration();
+	@NonNull
+	private final String name;
 
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() && fellowConfiguration.isEmpty();
+	private final Set<FellowConfiguration<C>> fellows = new HashSet<>();
+
+	public TeamConfiguration(@NotNull final C context, @NonNull final String name) {
+		super(context);
+		this.name = name;
 	}
-	
-	
 }
