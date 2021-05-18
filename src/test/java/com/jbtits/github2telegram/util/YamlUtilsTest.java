@@ -1,8 +1,8 @@
 package com.jbtits.github2telegram.util;
 
-import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping.TlgrmFellow;
-import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping.TlgrmTeam;
-import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping.TlgrmTribe;
+import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.yml.TlgrmFellow;
+import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.yml.TlgrmTeam;
+import com.jbtits.github2telegram.domain.dto.tlgrm.cfg.yml.TlgrmTribe;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.ResourceUtils;

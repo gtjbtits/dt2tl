@@ -1,15 +1,17 @@
 package com.jbtits.github2telegram.domain.dto.tlgrm;
 
-import com.jbtits.github2telegram.domain.dto.common.AbstractContext;
-import lombok.Data;
-import lombok.NonNull;
+import com.jbtits.github2telegram.domain.dto.context.AbstractUserContext;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
-@Data
-public class TlgrmUserContext implements AbstractContext {
+@Getter
+@EqualsAndHashCode(callSuper = true)
+public class TlgrmUserContext extends TlgrmChatContext implements AbstractUserContext {
 
-  @NonNull
-  private final String id;
+  private final long userId;
 
-  @NonNull
-  private final String username;
+  public TlgrmUserContext(long chatId, long userId) {
+    super(chatId);
+    this.userId = userId;
+  }
 }

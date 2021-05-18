@@ -1,6 +1,6 @@
 package com.jbtits.github2telegram.service.impl;
 
-import com.jbtits.github2telegram.component.Dt2TlBot;
+import com.jbtits.github2telegram.component.tlgrm.Dt2TlBot;
 import com.jbtits.github2telegram.domain.exception.FileDownloadException;
 import com.jbtits.github2telegram.service.FileService;
 import lombok.NonNull;

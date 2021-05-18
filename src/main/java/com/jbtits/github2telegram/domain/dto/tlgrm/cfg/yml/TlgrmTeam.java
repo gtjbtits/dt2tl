@@ -1,4 +1,4 @@
-package com.jbtits.github2telegram.domain.dto.tlgrm.cfg.mapping;
+package com.jbtits.github2telegram.domain.dto.tlgrm.cfg.yml;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

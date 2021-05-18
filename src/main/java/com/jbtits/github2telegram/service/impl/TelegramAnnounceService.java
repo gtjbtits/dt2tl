@@ -1,9 +1,10 @@
 package com.jbtits.github2telegram.service.impl;
 
-import com.jbtits.github2telegram.component.Dt2TlBot;
+import com.jbtits.github2telegram.component.tlgrm.Dt2TlBot;
 import com.jbtits.github2telegram.domain.dto.announce.CodeReviewAnnounce;
 import com.jbtits.github2telegram.domain.dto.announce.MentionAnnounce;
 import com.jbtits.github2telegram.domain.dto.announce.TextAnnounce;
+import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;
 import com.jbtits.github2telegram.service.AnnounceService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -41,15 +42,15 @@ public class TelegramAnnounceService implements AnnounceService {
         announceDto.getUrl(),
         announceDto.getFrom(),
         reviewers);
-    bot.sendMessage(text, announceDto.getChatId());
+    bot.sendMessage(text, new TlgrmChatContext(announceDto.getChatId()));
   }
 
   public void mention(@NonNull MentionAnnounce mentionAnnounce) {
     final String text = String.join(" ", mentionAnnounce.getTo());
-    bot.sendMessage(text, mentionAnnounce.getChatId());
+    bot.sendMessage(text, new TlgrmChatContext(mentionAnnounce.getChatId()));
   }
 
   public void sendText(@NonNull TextAnnounce textAnnounce) {
-    bot.sendMessage(textAnnounce.getText(), textAnnounce.getChatId());
+    bot.sendMessage(textAnnounce.getText(), new TlgrmChatContext(textAnnounce.getChatId()));
   }
 }

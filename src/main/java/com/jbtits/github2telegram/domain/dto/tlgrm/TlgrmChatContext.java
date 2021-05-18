@@ -1,17 +1,10 @@
 package com.jbtits.github2telegram.domain.dto.tlgrm;
 
-import com.jbtits.github2telegram.domain.dto.common.AbstractContext;
+import com.jbtits.github2telegram.domain.dto.context.AbstractChatContext;
 import lombok.Data;
-import lombok.NonNull;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
-public class TlgrmChatContext implements AbstractContext {
+public class TlgrmChatContext implements AbstractChatContext, AbstractTlgrmContext {
 
-  @NonNull
-  private final long id;
-
-  private final Set<TlgrmUserContext> userContextSet = new HashSet<>();
+  private final long chatId;
 }
