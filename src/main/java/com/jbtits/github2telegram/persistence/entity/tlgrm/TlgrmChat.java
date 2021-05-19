@@ -4,6 +4,7 @@ import com.jbtits.github2telegram.persistence.entity.BaseIdEntity;
 import com.jbtits.github2telegram.persistence.entity.Tribe;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +15,14 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "tlgrm_chats")
-@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 public class TlgrmChat extends BaseIdEntity {
-  @Column(name = "tlgrm_id")
-  private long telegramId;
+
+  @ToString.Include
+  @EqualsAndHashCode.Include
+  @Column(name = "tlgrm_chat_id")
+  private long tlgrmChatId;
 
   @OneToOne
   @JoinColumn(name = "tribe_id")

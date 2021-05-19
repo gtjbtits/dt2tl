@@ -2,20 +2,26 @@ package com.jbtits.github2telegram.persistence.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "tribes")
-@EqualsAndHashCode(callSuper = true)
-public class Tribe extends BaseBusinessEntity {
+@ToString(callSuper = true, onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+public class Tribe extends BaseIdEntity {
 
+  @ToString.Include
   private String name;
 
-  @OneToMany(mappedBy = "tribe")
-  private Set<Team> teams;
+  private boolean active;
+
+  @OneToMany(mappedBy = "tribe", orphanRemoval = true)
+  private List<Team> teams;
 }

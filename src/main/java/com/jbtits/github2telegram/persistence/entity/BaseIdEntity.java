@@ -5,15 +5,20 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import java.time.ZonedDateTime;
 
 @Data
 @MappedSuperclass
-@EqualsAndHashCode(exclude = {"created", "updated"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public abstract class BaseIdEntity {
+
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
   private long id;
 
   @CreationTimestamp
