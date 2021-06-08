@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.jbtits.github2telegram.util.TlgrmUtils.MARKDOWN_PARSE_MODE;
@@ -35,6 +36,21 @@ import static com.jbtits.github2telegram.util.TlgrmUtils.MARKDOWN_PARSE_MODE;
 @RequiredArgsConstructor
 public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
 
+  private static final Random RANDOM = new Random();
+
+  private static final String[] ANNOUNCE_TEXTS = {
+      "Review fewer than 400 lines of code at a time",
+      "Take your time. Inspection rates should under 500 LOC per hour",
+      "Do not review for more than 60 minutes at a time",
+      "Set goals and capture metrics",
+      "Authors should annotate source code before the review",
+      "Use checklists",
+      "Establish a process for fixing defects found",
+      "Foster a positive code review culture",
+      "Embrace the subconscious implications of peer review",
+      "Practice lightweight code reviews"
+  };
+
   private final MessageHelper messageHelper;
   private final TlgrmSender tlgrmSender;
   private final TlgrmMetaHelper tlgrmMetaHelper;
@@ -42,7 +58,6 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
   private final ConfigurationPrinterService<TlgrmChatContext, TlgrmUserContext> configurationPrinterService;
 
   @Override
-  @NonNull
   public void sendTribeConfigurationMessage(final @NonNull TlgrmChatContext context,
                                             final @NonNull TribeConfiguration<TlgrmChatContext, TlgrmUserContext> configuration) {
     final SendMessage.SendMessageBuilder builder = SendMessage.builder()
@@ -91,7 +106,6 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
   }
 
   @Override
-  @NonNull
   public void updateTribeConfigurationMessage(final @NonNull TlgrmMessageContext context,
                                               final @NonNull TribeConfiguration<TlgrmChatContext, TlgrmUserContext> configuration) {
     final EditMessageText.EditMessageTextBuilder builder = EditMessageText.builder()
@@ -141,7 +155,6 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
   }
 
   @Override
-  @NonNull
   public void updateTeamsConfigurationMessage(final @NonNull TlgrmMessageContext context,
                                               final @NonNull TribeConfiguration<TlgrmChatContext, TlgrmUserContext> configuration) {
     final EditMessageText.EditMessageTextBuilder builder = EditMessageText.builder()
@@ -188,7 +201,6 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
   }
 
   @Override
-  @NonNull
   public void finalizeConfigurationMessage(final @NonNull TlgrmMessageContext context,
                                            final @NonNull TribeConfiguration<TlgrmChatContext, TlgrmUserContext> configuration) {
     final EditMessageText.EditMessageTextBuilder builder = EditMessageText.builder()
@@ -205,7 +217,6 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
   }
 
   @Override
-  @NonNull
   public void sendReviewAnnounce(final @NonNull TlgrmChatContext context,
                                  final @NonNull Map<Fellow, TlgrmUser> reviewers,
                                  final @NonNull String prLink) {
@@ -219,8 +230,9 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
     final String invites = chatMembers.stream()
         .map(tlgrmMetaHelper::constructUserNameWithUsername)
         .collect(Collectors.joining(", "));
+    final String announceText = ANNOUNCE_TEXTS[RANDOM.nextInt(ANNOUNCE_TEXTS.length)];
     final SendMessage sendMessage = SendMessage.builder()
-        .text(this.messageHelper.getMsg("tlgrm_msg_pr_announce", prLink, invites))
+        .text(this.messageHelper.getMsg("tlgrm_msg_pr_announce", announceText, prLink, invites))
         .chatId(String.valueOf(context.getChatId()))
 //        .parseMode(MARKDOWN_PARSE_MODE)
         .build();
