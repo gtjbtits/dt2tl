@@ -1,1 +1,0 @@
-delete from DEVELOPER where USERNAME = 'malikin_t';

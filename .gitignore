@@ -29,6 +29,11 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Eclipse ###
+**.class
+bin/
+**.properties
+
 ### VS Code ###
 .vscode/
 

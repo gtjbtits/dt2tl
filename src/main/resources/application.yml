@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:h2:./g2t
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/dt2tl
+    username: dt2tl
+    password: dt2tl
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
@@ -14,5 +14,4 @@ logging:
 botapi:
   token: ${botapi_token}
   username: ${botapi_username}
-pr:
-  prefix: ${pr_prefix}
+
