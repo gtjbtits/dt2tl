@@ -7,7 +7,6 @@ import com.jbtits.github2telegram.domain.event.tlgrm.msg.TlgrmPrMessageEvent;
 import com.jbtits.github2telegram.domain.exception.tlgrm.TlgrmListenerException;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmChatNotFoundException;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmFellowNotFoundException;
-import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmTribeNotActiveException;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmUserNotFoundException;
 import com.jbtits.github2telegram.helpers.MessageHelper;
 import com.jbtits.github2telegram.helpers.TlgrmMessageHelper;
@@ -102,7 +101,7 @@ public class TlgrmPrMessageListener extends AbstractTlgrmMessageListener<TlgrmMe
     final List<Fellow> reviewers;
     try {
       reviewers = this.tribeService.findReviewers(context);
-    } catch (TlgrmChatNotFoundException | TlgrmTribeNotActiveException e) {
+    } catch (TlgrmChatNotFoundException e) {
       log.warn("Reviewers for tlgrmChat={} was not found. Because: {}", context.getChatId(), e.getMessage());
       this.tlgrmMessageHelper.sendError("tlgrm_err_pr_no_available_cfg", context.getChatId(),
           this.messageHelper.getMsg("tlgrm_btn_save_config"));

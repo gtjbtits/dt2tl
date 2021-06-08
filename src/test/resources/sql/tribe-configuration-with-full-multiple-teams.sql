@@ -1,4 +1,4 @@
-insert into tribes (id, name, active) values (1, 'TestTribe', true);
+insert into tribes (id, name) values (1, 'TestTribe');
 insert into teams (id, name, tribe_id) values (1, 'Team1', 1);
 insert into teams (id, name, tribe_id) values (2, 'Team2', 1);
 insert into fellows (id, name, team_id) values (1, 'Fellow1_1', 1);

@@ -5,7 +5,6 @@ import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmUserContext;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmChatNotFoundException;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmFellowNotFoundException;
-import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmTribeNotActiveException;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmUserNotFoundException;
 import com.jbtits.github2telegram.persistence.entity.Fellow;
 import com.jbtits.github2telegram.persistence.entity.Tribe;
@@ -58,25 +57,12 @@ public class TlgrmTribeService implements TribeService<TlgrmChatContext, TlgrmUs
     this.tlgrmChatService.save(tlgrmChat);
   }
 
-  @Override
-  public void activate(final @NonNull Tribe tribe) {
-    tribe.setActive(true);
-    tribeRepository.save(tribe);
-  }
-
-  @Override
-  public void deactivate(final @NonNull Tribe tribe) {
-    tribe.setActive(false);
-    tribeRepository.save(tribe);
-  }
-
   /**
    *
    * @param userContext
    * @return
    *
    * @throws TlgrmChatNotFoundException if no chat for context is found
-   * @throws TlgrmTribeNotActiveException if Tribe is deactivated
    * @throws TlgrmUserNotFoundException if no user for context is found
    */
   @Override
@@ -89,9 +75,6 @@ public class TlgrmTribeService implements TribeService<TlgrmChatContext, TlgrmUs
     final var tribe = tlgrmChat.getTribe();
     if (tribe == null) {
       throw new IllegalStateException("Every TlgrmChat must have Tribe");
-    }
-    if (!tribe.isActive()) {
-      throw new TlgrmTribeNotActiveException("Tribe with id " + tribe.getId() + " is not active");
     }
     final var fellows = tribe.getTeams().stream()
         .filter(Objects::nonNull)

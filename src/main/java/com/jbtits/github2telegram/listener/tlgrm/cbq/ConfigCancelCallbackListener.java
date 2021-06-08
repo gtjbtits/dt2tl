@@ -52,7 +52,6 @@ public class ConfigCancelCallbackListener
   @Transactional
   protected void on(final @NonNull ConfigCancelCallbackEvent event) {
     final var context = event.getContext();
-    this.configurationPersistenceService.activate(context);
     this.tlgrmConfigurationMessagesKeyValueService.removeAllConfigurationMessageIds();
     this.configurationKeyValueService.remove(context.getChatId());
     tlgrmMessageHelper.deleteMessage(context.getChatId(), context.getMessageId());

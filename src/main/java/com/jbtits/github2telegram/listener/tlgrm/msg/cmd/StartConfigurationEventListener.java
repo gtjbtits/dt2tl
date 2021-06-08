@@ -1,6 +1,5 @@
 package com.jbtits.github2telegram.listener.tlgrm.msg.cmd;
 
-import com.jbtits.github2telegram.component.tlgrm.TlgrmSender;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmBotCmd;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmMessageContext;
@@ -66,7 +65,6 @@ public class StartConfigurationEventListener
     final var context = event.getContext();
     final var emptyConfiguration
         = this.configurationWizardService.generateEmptyConfiguration(context);
-    this.configurationPersistenceService.deactivate(context);
     final var tribeConfiguration
         = this.configurationKeyValueService.get(context.getChatId())
           .or(() -> this.configurationPersistenceService.get(context))

@@ -69,33 +69,11 @@ public class TlgrmConfigurationPersistenceService
   }
 
   @Override
-  @Transactional(propagation = Propagation.NEVER)
+  @Transactional(propagation = Propagation.NOT_SUPPORTED)
   public void save(@NonNull TribeConfiguration<TlgrmChatContext, TlgrmUserContext> configuration) {
     this.tlgrmUserFellowService.drop(configuration.getContext());
     this.teamService.drop(configuration.getContext());
     this.tribeService.save(configuration);
-  }
-
-  @Override
-  public void deactivate(final @NonNull TlgrmChatContext context) {
-    this.tlgrmChatService.findByTlgrmChatId(context.getChatId()).ifPresent(tlgrmChat -> {
-      final var tribe = tlgrmChat.getTribe();
-      if (tribe == null) {
-        throw new IllegalStateException("Telegram Chat hasn't Tribe, but it couldn't be");
-      }
-      this.tribeService.deactivate(tribe);
-    });
-  }
-
-  @Override
-  public void activate(final @NonNull TlgrmChatContext context) {
-    this.tlgrmChatService.findByTlgrmChatId(context.getChatId()).ifPresent(tlgrmChat -> {
-      final var tribe = tlgrmChat.getTribe();
-      if (tribe == null) {
-        throw new IllegalStateException("Telegram Chat hasn't Tribe, but it couldn't be");
-      }
-      this.tribeService.activate(tribe);
-    });
   }
 
   @NonNull

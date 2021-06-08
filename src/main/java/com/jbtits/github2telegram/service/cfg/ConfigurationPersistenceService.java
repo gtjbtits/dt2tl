@@ -12,8 +12,4 @@ public interface ConfigurationPersistenceService<C extends AbstractChatContext, 
 	Optional<TribeConfiguration<C,U>> get(@NonNull C context);
 
 	void save(@NonNull TribeConfiguration<C, U> configuration);
-
-	void deactivate(@NonNull final C context);
-
-	void activate(@NonNull final C context);
 }

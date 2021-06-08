@@ -16,10 +16,6 @@ public interface TribeService<C extends AbstractChatContext, U extends AbstractU
 
   void save(final @NonNull TribeConfiguration<C, U> configuration);
 
-  void activate(@NonNull final Tribe tribe);
-
-  void deactivate(@NonNull final Tribe tribe);
-
   @NonNull
   List<Fellow> findReviewers(@NonNull final U userContext);
 }

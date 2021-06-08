@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Entity
@@ -19,8 +18,6 @@ public class Tribe extends BaseIdEntity {
 
   @ToString.Include
   private String name;
-
-  private boolean active;
 
   @OneToMany(mappedBy = "tribe", orphanRemoval = true)
   private List<Team> teams;

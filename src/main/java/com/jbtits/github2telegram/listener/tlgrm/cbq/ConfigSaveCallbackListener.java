@@ -53,7 +53,6 @@ public class ConfigSaveCallbackListener extends AbstractTlgrmCallbackQueryListen
     final var context = event.getContext();
     this.configurationKeyValueService.get(context.getChatId()).ifPresent(tribeConfiguration -> {
       this.configurationPersistenceService.save(tribeConfiguration);
-      this.configurationPersistenceService.activate(context);
       this.tlgrmConfigurationMessagesKeyValueService.removeAllConfigurationMessageIds();
       this.configurationKeyValueService.remove(context.getChatId());
       this.tlgrmMessageHelper.finalizeConfigurationMessage(context, tribeConfiguration);

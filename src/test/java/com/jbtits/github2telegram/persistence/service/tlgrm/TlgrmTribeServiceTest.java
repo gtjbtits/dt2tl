@@ -4,7 +4,6 @@ import com.jbtits.github2telegram.configuration.TlgrmContextTestConfiguration;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmUserContext;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmChatNotFoundException;
-import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmTribeNotActiveException;
 import com.jbtits.github2telegram.domain.exception.tlgrm.cfg.TlgrmUserNotFoundException;
 import com.jbtits.github2telegram.persistence.entity.Fellow;
 import com.jbtits.github2telegram.persistence.service.TribeService;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 import java.util.List;
 
@@ -50,17 +48,6 @@ class TlgrmTribeServiceTest {
     final var userContext = new TlgrmUserContext(-1L, 1000L);
     assertThatThrownBy(() -> this.tribeService.findReviewers(userContext))
         .isInstanceOf(TlgrmChatNotFoundException.class);
-  }
-
-  @Test
-  @SqlGroup({
-      @Sql("classpath:./sql/tribe-configuration-with-full-multiple-teams.sql"),
-      @Sql(statements = {"update tribes set active = false where id = 1"})
-  })
-  void findReviewers_Must_ThrowExceptionIfTribeIsNotActive() {
-    final var userContext = new TlgrmUserContext(1000L, 1000L);
-    assertThatThrownBy(() -> this.tribeService.findReviewers(userContext))
-        .isInstanceOf(TlgrmTribeNotActiveException.class);
   }
 
   @Test
