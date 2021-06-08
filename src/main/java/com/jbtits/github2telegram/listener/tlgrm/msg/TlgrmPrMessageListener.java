@@ -103,8 +103,7 @@ public class TlgrmPrMessageListener extends AbstractTlgrmMessageListener<TlgrmMe
       reviewers = this.tribeService.findReviewers(context);
     } catch (TlgrmChatNotFoundException e) {
       log.warn("Reviewers for tlgrmChat={} was not found. Because: {}", context.getChatId(), e.getMessage());
-      this.tlgrmMessageHelper.sendError("tlgrm_err_pr_no_available_cfg", context.getChatId(),
-          this.messageHelper.getMsg("tlgrm_btn_save_config"));
+      this.tlgrmMessageHelper.sendError("tlgrm_err_pr_no_available_cfg", context.getChatId());
       return;
     } catch (TlgrmUserNotFoundException e) {
       this.tlgrmMessageHelper.sendError("tlgrm_err_pr_author_not_found", context.getChatId());
