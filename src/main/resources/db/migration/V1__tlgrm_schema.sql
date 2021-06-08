@@ -1,6 +1,6 @@
 create table TLGRM_USERS
 (
-    ID IDENTITY not null
+    ID bigserial not null
         primary key,
     CREATED TIMESTAMP,
     UPDATED TIMESTAMP,
@@ -9,21 +9,21 @@ create table TLGRM_USERS
 
 create table TRIBES
 (
-    ID IDENTITY not null
+    ID bigserial not null
         primary key,
     CREATED TIMESTAMP,
     UPDATED TIMESTAMP,
     ACTIVE BOOLEAN not null default false,
-    NAME VARCHAR(255) not null
+    NAME text not null
 );
 
 create table TEAMS
 (
-    ID IDENTITY not null
+    ID bigserial not null
         primary key,
     CREATED TIMESTAMP,
     UPDATED TIMESTAMP,
-    NAME VARCHAR(255) not null,
+    NAME text not null,
     TRIBE_ID BIGINT not null,
     constraint team_name_unique_across_tribe
         unique (NAME, TRIBE_ID),
@@ -33,11 +33,11 @@ create table TEAMS
 
 create table FELLOWS
 (
-    ID IDENTITY not null
+    ID bigserial not null
         primary key,
     CREATED TIMESTAMP,
     UPDATED TIMESTAMP,
-    NAME VARCHAR(255),
+    NAME text,
     TEAM_ID BIGINT,
     constraint fellow_team_fk
         foreign key (TEAM_ID) references TEAMS (ID)
@@ -45,7 +45,7 @@ create table FELLOWS
 
 create table TLGRM_CHATS
 (
-    ID IDENTITY not null
+    ID bigserial not null
         primary key,
     CREATED TIMESTAMP,
     UPDATED TIMESTAMP,
@@ -59,7 +59,7 @@ create table TLGRM_CHATS
 
 create table TLGRM_USER_FELLOWS
 (
-    ID IDENTITY not null
+    ID bigserial not null
         primary key,
     CREATED TIMESTAMP,
     UPDATED TIMESTAMP,
