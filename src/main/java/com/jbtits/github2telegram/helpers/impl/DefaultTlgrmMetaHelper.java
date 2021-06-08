@@ -71,7 +71,9 @@ public class DefaultTlgrmMetaHelper implements TlgrmMetaHelper {
     if (user == null) {
       throw new IllegalStateException("ChatMember hasn't User object");
     }
-    return Optional.ofNullable(user.getUserName());
+    return user.getUserName() != null && !user.getUserName().isBlank()
+        ? Optional.of(TELEGRAM_AT_PREFIX + user.getUserName())
+        : Optional.empty();
   }
 
   @NonNull
@@ -81,7 +83,6 @@ public class DefaultTlgrmMetaHelper implements TlgrmMetaHelper {
     sb.append(this.extractName(chatMember));
     this.extractUsername(chatMember).ifPresent(userName -> {
       sb.append(" (");
-      sb.append(TELEGRAM_AT_PREFIX);
       sb.append(userName);
       sb.append(")");
     });

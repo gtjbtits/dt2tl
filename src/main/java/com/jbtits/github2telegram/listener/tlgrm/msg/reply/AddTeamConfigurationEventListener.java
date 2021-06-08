@@ -60,7 +60,7 @@ public class AddTeamConfigurationEventListener extends AbstractTlgrmMessageReply
     final var context = event.getContext();
     this.configurationKeyValueService.get(context.getChatId()).ifPresent(tribeConfiguration -> {
       final var teamName = event.getTeamName();
-      if (teamName.getBytes().length > TLGRM_CALLBACK_DATA_MAX_LENGTH_BYTES
+      if (teamName.getBytes().length > TLGRM_CALLBACK_DATA_MAX_LENGTH_BYTES / 2 // safety ratio, cause base64(str)
           || !this.configurationWizardService.isTeamNameUnique(teamName, tribeConfiguration)) {
         tlgrmMessageHelper.sendError("tlgrm_err_config_add_team", context.getChatId());
         return;
