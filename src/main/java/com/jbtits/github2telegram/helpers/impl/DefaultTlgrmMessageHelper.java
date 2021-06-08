@@ -228,13 +228,13 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
     final String invites = chatMembers.stream()
-        .map(tlgrmMetaHelper::constructUserNameWithUsername)
+        .map(chatMember -> this.tlgrmMetaHelper.extractUsername(chatMember)
+            .orElse(this.tlgrmMetaHelper.extractName(chatMember)))
         .collect(Collectors.joining(", "));
     final String announceText = ANNOUNCE_TEXTS[RANDOM.nextInt(ANNOUNCE_TEXTS.length)];
     final SendMessage sendMessage = SendMessage.builder()
         .text(this.messageHelper.getMsg("tlgrm_msg_pr_announce", announceText, prLink, invites))
         .chatId(String.valueOf(context.getChatId()))
-//        .parseMode(MARKDOWN_PARSE_MODE)
         .build();
     this.tlgrmSender.safeExecute(sendMessage);
   }
