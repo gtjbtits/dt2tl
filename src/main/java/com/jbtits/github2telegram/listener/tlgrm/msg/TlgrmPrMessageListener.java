@@ -17,6 +17,7 @@ import com.jbtits.github2telegram.persistence.service.tlgrm.TlgrmUserService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 @Slf4j
-@Service
+@Component
 public class TlgrmPrMessageListener extends AbstractTlgrmMessageListener<TlgrmMessageContext, TlgrmPrMessageEvent> {
 
   private static final String MESSAGE_ENTITY_TYPE_URL = "url";

@@ -1,4 +1,4 @@
-package com.jbtits.github2telegram.service.tlgrm.cfg;
+package com.jbtits.github2telegram.service.tlgrm.impl.cfg;
 
 import com.jbtits.github2telegram.domain.dto.cfg.TribeConfiguration;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;

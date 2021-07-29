@@ -1,4 +1,4 @@
-package com.jbtits.github2telegram.service.tlgrm.cfg;
+package com.jbtits.github2telegram.service.tlgrm.impl.cfg;
 
 import com.jbtits.github2telegram.component.tlgrm.TlgrmSender;
 import com.jbtits.github2telegram.domain.dto.cfg.TeamConfiguration;
@@ -8,6 +8,7 @@ import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmUserContext;
 import com.jbtits.github2telegram.helpers.MessageHelper;
 import com.jbtits.github2telegram.helpers.TlgrmMetaHelper;
 import com.jbtits.github2telegram.service.cfg.ConfigurationPrinterService;
+import com.jbtits.github2telegram.service.tlgrm.TlgrmMetaService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class TlgrmConfigurationPrinterService
   private final TlgrmSender tlgrmSender;
   private final TlgrmMetaHelper tlgrmMetaHelper;
   private final MessageHelper messageHelper;
+  private final TlgrmMetaService tlgrmMetaService;
 
   @Override
   public @NonNull String printTeams(
@@ -48,7 +50,7 @@ public class TlgrmConfigurationPrinterService
       teamConfiguration.getFellows().forEach(fellowConfiguration -> {
         final TlgrmUserContext userContext = fellowConfiguration.getContext();
         final ChatMember chatMember =
-            this.tlgrmSender.getChatMemberMetadata(userContext.getChatId(), userContext.getUserId());
+            this.tlgrmMetaService.obtainChatMemberMetadata(userContext.getChatId(), userContext.getUserId());
         if (chatMember == null) {
           throw new IllegalStateException("Can't find ChatMember for user");
         }

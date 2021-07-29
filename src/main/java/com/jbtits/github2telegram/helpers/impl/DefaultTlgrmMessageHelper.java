@@ -14,6 +14,7 @@ import com.jbtits.github2telegram.listener.tlgrm.cbq.TlgrmCallbackQueryData;
 import com.jbtits.github2telegram.persistence.entity.Fellow;
 import com.jbtits.github2telegram.persistence.entity.tlgrm.TlgrmUser;
 import com.jbtits.github2telegram.service.cfg.ConfigurationPrinterService;
+import com.jbtits.github2telegram.service.tlgrm.TlgrmMetaService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -54,6 +55,7 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
   private final MessageHelper messageHelper;
   private final TlgrmSender tlgrmSender;
   private final TlgrmMetaHelper tlgrmMetaHelper;
+  private final TlgrmMetaService tlgrmMetaService;
 
   private final ConfigurationPrinterService<TlgrmChatContext, TlgrmUserContext> configurationPrinterService;
 
@@ -223,7 +225,7 @@ public class DefaultTlgrmMessageHelper implements TlgrmMessageHelper {
     final var chatMembers = reviewers.keySet().stream()
         .map(fellow -> {
           final var tlgrmUser = reviewers.get(fellow);
-          return this.tlgrmSender.getChatMemberMetadata(context.getChatId(), tlgrmUser.getTlgrmUserId());
+          return this.tlgrmMetaService.obtainChatMemberMetadata(context.getChatId(), tlgrmUser.getTlgrmUserId());
         })
         .filter(Objects::nonNull)
         .collect(Collectors.toList());

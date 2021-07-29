@@ -1,4 +1,4 @@
-package com.jbtits.github2telegram.service.tlgrm.cfg;
+package com.jbtits.github2telegram.service.tlgrm.impl.cfg;
 
 import com.jbtits.github2telegram.component.tlgrm.TlgrmSender;
 import com.jbtits.github2telegram.domain.dto.cfg.FellowConfiguration;
@@ -9,6 +9,7 @@ import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmUserContext;
 import com.jbtits.github2telegram.domain.exception.tlgrm.TlgrmMetadataObtainingException;
 import com.jbtits.github2telegram.helpers.TlgrmMetaHelper;
 import com.jbtits.github2telegram.service.cfg.ConfigurationWizardService;
+import com.jbtits.github2telegram.service.tlgrm.TlgrmMetaService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class TlgrmConfigurationWizardService
 
   private final TlgrmSender tlgrmSender;
   private final TlgrmMetaHelper tlgrmMetaHelper;
+  private final TlgrmMetaService tlgrmMetaService;
 
   @Override
   public @NonNull TribeConfiguration<TlgrmChatContext, TlgrmUserContext> generateEmptyConfiguration(
@@ -82,7 +84,7 @@ public class TlgrmConfigurationWizardService
         .filter(teamConfiguration -> teamConfiguration.getName().equals(teamName))
         .findAny().ifPresent(targetTeamConfiguration -> {
           final var chatMember =
-              this.tlgrmSender.getChatMemberMetadata(userContext.getChatId(), userContext.getUserId());
+              this.tlgrmMetaService.obtainChatMemberMetadata(userContext.getChatId(), userContext.getUserId());
           if (chatMember == null) {
             throw new IllegalStateException("Can't find chat member with user id " + userContext.getUserId());
           }
