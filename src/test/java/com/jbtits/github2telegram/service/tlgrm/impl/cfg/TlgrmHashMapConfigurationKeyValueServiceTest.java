@@ -1,9 +1,10 @@
-package com.jbtits.github2telegram.service.tlgrm.cfg;
+package com.jbtits.github2telegram.service.tlgrm.impl.cfg;
 
 import com.jbtits.github2telegram.configuration.TlgrmContextTestConfiguration;
 import com.jbtits.github2telegram.domain.dto.cfg.TribeConfiguration;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmUserContext;
+import com.jbtits.github2telegram.service.tlgrm.impl.TlgrmCachedMetaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = {
     TlgrmContextTestConfiguration.class,
     TlgrmHashMapConfigurationKeyValueService.class,
-    TlgrmConfigurationWizardService.class
+    TlgrmConfigurationWizardService.class,
+    TlgrmCachedMetaService.class
 })
 class TlgrmHashMapConfigurationKeyValueServiceTest {
 

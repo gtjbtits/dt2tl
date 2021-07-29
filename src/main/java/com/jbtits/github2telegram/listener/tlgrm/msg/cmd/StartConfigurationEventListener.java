@@ -11,7 +11,7 @@ import com.jbtits.github2telegram.helpers.TlgrmMetaHelper;
 import com.jbtits.github2telegram.service.cfg.ConfigurationKeyValueService;
 import com.jbtits.github2telegram.service.cfg.ConfigurationPersistenceService;
 import com.jbtits.github2telegram.service.cfg.ConfigurationWizardService;
-import com.jbtits.github2telegram.service.tlgrm.cfg.TlgrmConfigurationMessagesKeyValueService;
+import com.jbtits.github2telegram.service.tlgrm.impl.cfg.TlgrmConfigurationMessagesKeyValueService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

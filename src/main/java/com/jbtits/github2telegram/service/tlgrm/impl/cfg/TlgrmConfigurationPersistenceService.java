@@ -1,4 +1,4 @@
-package com.jbtits.github2telegram.service.tlgrm.cfg;
+package com.jbtits.github2telegram.service.tlgrm.impl.cfg;
 
 import com.jbtits.github2telegram.domain.dto.cfg.FellowConfiguration;
 import com.jbtits.github2telegram.domain.dto.cfg.TeamConfiguration;
