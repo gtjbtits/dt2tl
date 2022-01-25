@@ -5,11 +5,11 @@
   "env": {
       "botapi_token": {
 	   "description": "An api token from tg's botfather",
-	   "generator": "secret"
+	   "required": true
        },
        "botapi_username": {
-	   "description": "bot name to communicate",
-	   "generator": "secret"
+	   "description": "Username of your bot. It must end in `bot`. Like this, for example: TetrisBot or tetris_bot.",
+	   "required": true
        }
   }
 }
