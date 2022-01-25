@@ -11,7 +11,7 @@ import com.jbtits.github2telegram.service.cfg.ConfigurationPrinterService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.objects.ChatMember;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 
 import java.util.stream.Collectors;
 

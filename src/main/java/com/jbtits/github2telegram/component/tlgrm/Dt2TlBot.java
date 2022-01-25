@@ -3,7 +3,6 @@ package com.jbtits.github2telegram.component.tlgrm;
 import com.jbtits.github2telegram.configuration.properties.BotApiProperties;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmCallbackContext;
 import com.jbtits.github2telegram.helpers.JsonHelper;
-import com.jbtits.github2telegram.helpers.MessageHelper;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,11 +13,9 @@ import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChat;
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMember;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.Serializable;
@@ -58,6 +55,7 @@ public class Dt2TlBot extends TelegramLongPollingBot implements TlgrmSender {
 
     @Override
     public <T extends Serializable, M extends BotApiMethod<T>> T safeExecute(M botApiMethod) {
+        log.trace("Sending message to the Telegram API {}", this.jsonHelper.toPrettyString(botApiMethod));
         try {
             return this.execute(botApiMethod);
         } catch (TelegramApiException e) {
@@ -78,7 +76,7 @@ public class Dt2TlBot extends TelegramLongPollingBot implements TlgrmSender {
     public ChatMember getChatMemberMetadata(final long chatId, final long userId) {
         final var getChatMember = GetChatMember.builder()
             .chatId(String.valueOf(chatId))
-            .userId((int) userId)
+            .userId(userId)
             .build();
         return this.safeExecute(getChatMember);
     }

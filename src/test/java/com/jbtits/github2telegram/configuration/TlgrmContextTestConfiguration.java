@@ -7,8 +7,9 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.ChatMember;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberMember;
 import org.telegram.telegrambots.starter.TelegramBotInitializer;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -29,7 +30,7 @@ public class TlgrmContextTestConfiguration {
 
   public static final String TLGRM_TEST_CHAT_TITLE = "Tlgrm test chat";
 
-  public static final ChatMember TLGRM_TEST_CHAT_WITH_TITLE_FELLOW_1 = new ChatMember();
+  public static final ChatMember TLGRM_TEST_CHAT_WITH_TITLE_FELLOW_1 = new ChatMemberMember();
 
   public static final String FELLOW_1_NAME = "test_fellow_1";
   public static final long FELLOW_1_USER_ID = 1111L;
@@ -43,9 +44,9 @@ public class TlgrmContextTestConfiguration {
     TLGRM_TEST_CHAT_WITH_EMPTY_TITLE.setTitle(Strings.EMPTY);
 
     final var user1 = new User();
-    user1.setId((int) FELLOW_1_USER_ID);
+    user1.setId(FELLOW_1_USER_ID);
     user1.setFirstName("First Name");
-    TLGRM_TEST_CHAT_WITH_TITLE_FELLOW_1.setUser(user1);
+    ((ChatMemberMember) TLGRM_TEST_CHAT_WITH_TITLE_FELLOW_1).setUser(user1);
   }
 
   @Bean
