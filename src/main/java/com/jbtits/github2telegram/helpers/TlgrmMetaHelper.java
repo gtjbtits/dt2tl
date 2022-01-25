@@ -4,7 +4,7 @@ import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmCallbackContext;
 import com.jbtits.github2telegram.domain.exception.tlgrm.TlgrmListenerException;
 import lombok.NonNull;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.ChatMember;
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMember;
 
 import java.util.Optional;
 
