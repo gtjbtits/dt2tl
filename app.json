@@ -3,7 +3,7 @@
   "description": "backend for @Dt2tlBot",
   "repository": "https://github.com/gtjbtits/dt2tl",
   "env": {
-      "BOTAPI_TOKEN": {
+      "botapi_token": {
 	   "description": "An api token from tg's botfather",
 	   "generator": "secret"
 	}
