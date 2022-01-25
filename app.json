@@ -6,6 +6,10 @@
       "botapi_token": {
 	   "description": "An api token from tg's botfather",
 	   "generator": "secret"
-	}
+       },
+       "botapi_username": {
+	   "description": "bot name to communicate",
+	   "generator": "secret"
+       }
   }
 }
