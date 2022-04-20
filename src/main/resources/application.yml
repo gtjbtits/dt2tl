@@ -11,6 +11,10 @@ logging:
   level:
     root: info
     com.jbtits: ${log_jbtits:info}
+chat:
+  pr:
+    prefix: "!"
+    key-words: ["git", "bitbucket", "svn", "vcs", "scm"]
 botapi:
   token: ${botapi_token}
   username: ${botapi_username}

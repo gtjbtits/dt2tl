@@ -1,5 +1,6 @@
 package com.jbtits.github2telegram.listener.tlgrm.msg;
 
+import com.jbtits.github2telegram.configuration.properties.ChatPrProperties;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmChatContext;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmMessageContext;
 import com.jbtits.github2telegram.domain.dto.tlgrm.TlgrmUserContext;
@@ -22,34 +23,27 @@ import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Service
 public class TlgrmPrMessageListener extends AbstractTlgrmMessageListener<TlgrmMessageContext, TlgrmPrMessageEvent> {
 
   private static final String MESSAGE_ENTITY_TYPE_URL = "url";
-  private static final Set<String> vcsSigns = Set.of(
-      "git",
-      "bitbucket",
-      "svn",
-      "vcs"
-  );
-  private static final String PR_PREFIX = "!";
-
   private final TribeService<TlgrmChatContext, TlgrmUserContext> tribeService;
   private final TlgrmUserService tlgrmUserService;
   private final MessageHelper messageHelper;
+  private final ChatPrProperties properties;
 
   protected TlgrmPrMessageListener(final TlgrmMetaHelper tlgrmMetaHelper,
                                    final TlgrmMessageHelper tlgrmMessageHelper,
                                    final TribeService<TlgrmChatContext, TlgrmUserContext> tribeService,
                                    final TlgrmUserService tlgrmUserService,
-                                   final MessageHelper messageHelper) {
+                                   final MessageHelper messageHelper, ChatPrProperties properties) {
     super(tlgrmMetaHelper, tlgrmMessageHelper);
     this.tribeService = tribeService;
     this.tlgrmUserService = tlgrmUserService;
     this.messageHelper = messageHelper;
+    this.properties = properties;
   }
 
   @Override
@@ -81,15 +75,16 @@ public class TlgrmPrMessageListener extends AbstractTlgrmMessageListener<TlgrmMe
       throw new TlgrmListenerException("Message has no text");
     }
     final var text = src.getText();
-    if (!text.contains(PR_PREFIX) || text.indexOf(PR_PREFIX) >= offset) {
+    final var prefix = this.properties.getPrefix();
+    if (!text.contains(prefix) || text.indexOf(prefix) >= offset) {
       throw new TlgrmListenerException("Wrong PR format. Prefix must be before the url");
     }
     final var url = text.substring(offset, offset + length);
-    final var passedVcsSigns = vcsSigns.stream()
+    final var keyWords = this.properties.getKeyWords().stream()
         .filter(url::contains)
         .count();
-    if (passedVcsSigns == 0) {
-      throw new TlgrmListenerException("Url doesn't have any vcs signs. Not a PR link");
+    if (keyWords == 0) {
+      throw new TlgrmListenerException("Url doesn't contains any vcs key words. Not a PR link (skipped)");
     }
     return new TlgrmPrMessageEvent(new TlgrmMessageContext(chatId, from.getId(), src.getMessageId()), url);
   }
